@@ -6,4 +6,5 @@ export 'src/core/change_detection.dart';
 export 'src/core/di.dart';
 export 'src/core/metadata.dart';
 export 'src/core/zone.dart';
+export 'src/facade/application_mount_locator.dart' show ApplicationMountLocator;
 export 'src/facade/exception_handler.dart';
