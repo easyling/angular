@@ -6,6 +6,7 @@ import 'package:angular/src/runtime.dart';
 import 'package:meta/dart2js.dart' as dart2js;
 
 import '../facade/exception_handler.dart' show ExceptionHandler;
+import '../facade/application_mount_locator.dart' show ApplicationMountLocator;
 import 'change_detection/host.dart';
 import 'di.dart';
 import 'linker/component_factory.dart' show ComponentRef, ComponentFactory;
@@ -68,7 +69,7 @@ class ApplicationRef extends ChangeDetectionHost {
   ComponentRef<T> bootstrap<T>(ComponentFactory<T> componentFactory) {
     return unsafeCast(run(() {
       final component = componentFactory.create(_injector);
-      final existing = querySelector(componentFactory.selector);
+      final existing = _findMountElement(componentFactory.selector);
       Element replacement;
       if (existing != null) {
         final newElement = component.location;
@@ -96,6 +97,12 @@ class ApplicationRef extends ChangeDetectionHost {
       _loadedRootComponent(component, replacement);
       return component;
     }));
+  }
+
+  Element _findMountElement(String componentSelector) {
+    final _mountLocator = _injector.provideTypeOptional<ApplicationMountLocator>(ApplicationMountLocator)
+        ?? ApplicationMountLocator.byComponentSelector();
+    return _mountLocator.locateMountElement(componentSelector);
   }
 
   void _loadedRootComponent(ComponentRef<void> component, Element node) {

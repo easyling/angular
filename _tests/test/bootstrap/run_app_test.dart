@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:angular/angular.dart';
+import 'package:angular/core.dart' show ApplicationMountLocator;
 import 'package:angular/security.dart';
 import 'package:js/js.dart';
 import 'package:test/test.dart';
@@ -105,6 +106,20 @@ void main() {
     expect(StubExceptionHandler.lastCaughtException, isIntentionalError);
   });
 
+  test('runApp should allow overriding ApplicationMountLocator', () async {
+    component = runApp(
+      ng.HelloWorldComponentNgFactory,
+      createInjector: ([parent]) {
+        return Injector.map({
+          ApplicationMountLocator: StubApplicationMountLocator(),
+        }, parent);
+      },
+    );
+    expect(StubApplicationMountLocator.instanceWasCreated, isTrue);
+    await runInApp(() => HelloWorldComponent.doAsyncTaskThatThrows());
+    expect(StubApplicationMountLocator.locateMountElementWasCalled, isTrue);
+  });
+
   test('runAppAsync should await a future before bootstrapping', () async {
     component = await runAppAsync(
       ng.createHelloWorldComponentFactory(),
@@ -194,6 +209,22 @@ class StubExceptionHandler implements ExceptionHandler {
     lastCaughtException = exception;
   }
 }
+
+class StubApplicationMountLocator implements ApplicationMountLocator {
+  static bool instanceWasCreated = false;
+  static bool locateMountElementWasCalled = false;
+
+  StubApplicationMountLocator() {
+    instanceWasCreated = true;
+  }
+
+  @override
+  Element locateMountElement(String componentSelector) {
+    locateMountElementWasCalled = true;
+    return document.querySelector(componentSelector);
+  }
+}
+
 
 class StubSanitizationService implements SanitizationService {
   @override
