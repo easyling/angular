@@ -1,4 +1,8 @@
-*   Release for `2.0.0`.
+## 2.0.1-dev
+
+## 2.0.0
+
+* Stable release.
 
 ## 2.0.0-alpha+24
 

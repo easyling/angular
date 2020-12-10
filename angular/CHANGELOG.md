@@ -1,3 +1,9 @@
+## 6.0.1
+
+* Update `package:analyzer` dependency to `^0.40.0`.
+
+## 6.0.0
+
 ### New features
 
 *   Added `debugClearComponentStyles()`. This top-level function resets all

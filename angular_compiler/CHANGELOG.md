@@ -1,4 +1,11 @@
-*   Release for `0.5.0`.
+## 1.0.1
+
+* Removed invalid link from the OnPush compatibility warning.
+* Update `package:analyzer` dependency to `^0.40.0`.
+
+## 1.0.0
+
+* Stable release.
 
 ## 0.4.5
 

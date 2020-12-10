@@ -1,4 +1,10 @@
-*   Release for `0.6.0`.
+## 1.0.1
+
+* Update `package:analyzer` dependency to `^0.40.0`.
+
+## 1.0.0
+
+* Stable release.
 
 ## 0.5.11
 
